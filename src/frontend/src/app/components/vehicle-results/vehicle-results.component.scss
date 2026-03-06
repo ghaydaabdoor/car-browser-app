@@ -1,0 +1,51 @@
+.results-container {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  
+    h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 1.5rem;
+  
+      .count {
+        color: #4f46e5;
+        font-weight: 600;
+      }
+    }
+  }
+  
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.75rem;
+  }
+  
+  .model-card {
+    padding: 0.85rem 1rem;
+    background: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #1a1a2e;
+    transition: border-color 0.2s, background 0.2s;
+  
+    &:hover {
+      border-color: #4f46e5;
+      background: #eef2ff;
+      color: #4f46e5;
+    }
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #9ca3af;
+    font-size: 1rem;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  }

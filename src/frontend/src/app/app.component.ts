@@ -1,12 +1,21 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { VehicleSearchComponent } from './components/vehicle-search/vehicle-search.component';
+import { VehicleResultsComponent } from './components/vehicle-results/vehicle-results.component';
+import { VehicleModel } from './models/vehicle.models';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [VehicleSearchComponent, VehicleResultsComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'frontend';
+  models: VehicleModel[] = [];
+  hasSearched = false;
+
+  onModelsFound(models: VehicleModel[]): void {
+    this.models = models;
+    this.hasSearched = true;
+  }
 }

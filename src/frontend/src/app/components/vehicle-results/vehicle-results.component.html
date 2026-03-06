@@ -1,0 +1,16 @@
+<div class="results-container" *ngIf="models.length > 0">
+    <h2>Available Models <span class="count">({{ models.length }})</span></h2>
+    <div class="results-grid">
+      <div class="model-card" *ngFor="let model of models">
+        {{ model.model_Name }}
+      </div>
+    </div>
+  </div>
+  
+  <div class="empty-state" *ngIf="hasSearched && models.length === 0">
+    <p>No models found for the selected make and year</p>
+  </div>
+  
+  <div class="empty-state" *ngIf="!hasSearched">
+    <p>Select a make and year to see available models</p>
+  </div>
