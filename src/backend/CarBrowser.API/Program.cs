@@ -8,6 +8,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpClient();
 
+builder.Services.AddMemoryCache();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 
 builder.Services.AddCors(options =>

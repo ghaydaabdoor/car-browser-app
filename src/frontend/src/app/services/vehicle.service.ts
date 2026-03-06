@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Make, VehicleModel, VehicleType } from '../models/vehicle.models';
 
 @Injectable({
@@ -8,17 +8,11 @@ import { Make, VehicleModel, VehicleType } from '../models/vehicle.models';
 })
 export class VehicleService {
   private readonly apiUrl = 'http://localhost:5172/api/vehicle';
-  private makesCache: Make[] | null = null;
 
   constructor(private http: HttpClient) {}
 
   getAllMakes(): Observable<Make[]> {
-    if (this.makesCache) {
-      return of(this.makesCache);
-    }
-    return this.http.get<Make[]>(`${this.apiUrl}/makes`).pipe(
-      tap(data => this.makesCache = data)
-    );
+    return this.http.get<Make[]>(`${this.apiUrl}/makes`);
   }
 
   getVehicleTypes(makeId: number): Observable<VehicleType[]> {
