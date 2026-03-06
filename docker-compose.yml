@@ -1,0 +1,19 @@
+services:
+  backend:
+    build:
+      context: ./src/backend/CarBrowser.API
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - NhtsaApi__BaseUrl=https://vpic.nhtsa.dot.gov/api/vehicles
+
+  frontend:
+    build:
+      context: ./src/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
