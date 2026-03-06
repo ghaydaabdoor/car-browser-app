@@ -18,4 +18,9 @@ export class AppComponent {
     this.models = models;
     this.hasSearched = true;
   }
+
+  onMakeChanged(): void {
+    this.models = [];
+    this.hasSearched = false;
+  }
 }

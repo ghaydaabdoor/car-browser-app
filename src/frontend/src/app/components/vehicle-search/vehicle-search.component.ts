@@ -13,12 +13,16 @@ import { Make, VehicleType, VehicleModel } from '../../models/vehicle.models';
 })
 export class VehicleSearchComponent implements OnInit {
   @Output() modelsFound = new EventEmitter<VehicleModel[]>();
+  @Output() makeChanged = new EventEmitter<void>();
 
   makes: Make[] = [];
+  filteredMakes: Make[] = [];
   vehicleTypes: VehicleType[] = [];
 
-  selectedMakeId: number | null = null;
+  searchText = '';
+  selectedMake: Make | null = null;
   selectedYear: number | null = null;
+  showDropdown = false;
 
   isLoadingMakes = false;
   isLoadingTypes = false;
@@ -38,6 +42,7 @@ export class VehicleSearchComponent implements OnInit {
     this.vehicleService.getAllMakes().subscribe({
       next: (data) => {
         this.makes = data;
+        this.filteredMakes = [];
         this.isLoadingMakes = false;
       },
       error: () => {
@@ -46,28 +51,43 @@ export class VehicleSearchComponent implements OnInit {
     });
   }
 
-  onMakeChange(): void {
-    this.vehicleTypes = [];
-
-    if (this.selectedMakeId) {
-      this.isLoadingTypes = true;
-      this.vehicleService.getVehicleTypes(this.selectedMakeId).subscribe({
-        next: (data) => {
-          this.vehicleTypes = data;
-          this.isLoadingTypes = false;
-        },
-        error: () => {
-          this.isLoadingTypes = false;
-        }
-      });
+  onSearchInput(): void {
+    const query = this.searchText.trim().toLowerCase();
+    if (query.length < 2) {
+      this.filteredMakes = [];
+      this.showDropdown = false;
+      return;
     }
+    this.filteredMakes = this.makes.filter(m =>
+      m.make_Name.toLowerCase().includes(query)
+    ).slice(0, 50);
+    this.showDropdown = this.filteredMakes.length > 0;
+  }
+
+  selectMake(make: Make): void {
+    this.selectedMake = make;
+    this.searchText = make.make_Name;
+    this.showDropdown = false;
+    this.vehicleTypes = [];
+    this.makeChanged.emit();
+
+    this.isLoadingTypes = true;
+    this.vehicleService.getVehicleTypes(make.make_ID).subscribe({
+      next: (data) => {
+        this.vehicleTypes = data;
+        this.isLoadingTypes = false;
+      },
+      error: () => {
+        this.isLoadingTypes = false;
+      }
+    });
   }
 
   onSearch(): void {
-    if (!this.selectedMakeId || !this.selectedYear) return;
+    if (!this.selectedMake || !this.selectedYear) return;
 
     this.isLoadingModels = true;
-    this.vehicleService.getVehicleModels(this.selectedMakeId, this.selectedYear).subscribe({
+    this.vehicleService.getVehicleModels(this.selectedMake.make_ID, this.selectedYear).subscribe({
       next: (data) => {
         this.modelsFound.emit(data);
         this.isLoadingModels = false;
@@ -79,6 +99,6 @@ export class VehicleSearchComponent implements OnInit {
   }
 
   get canSearch(): boolean {
-    return !!this.selectedMakeId && !!this.selectedYear;
+    return !!this.selectedMake && !!this.selectedYear;
   }
 }

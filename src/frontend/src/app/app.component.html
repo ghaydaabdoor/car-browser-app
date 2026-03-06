@@ -1,4 +1,6 @@
 <main>
-  <app-vehicle-search (modelsFound)="onModelsFound($event)" />
+  <app-vehicle-search
+    (modelsFound)="onModelsFound($event)"
+    (makeChanged)="onMakeChanged()" />
   <app-vehicle-results [models]="models" [hasSearched]="hasSearched" />
 </main>

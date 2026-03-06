@@ -1,45 +1,58 @@
 <div class="search-container">
-    <div class="search-header">
-      <h1>Vehicle Browser</h1>
-      <p class="subtitle">Select a make and year to explore available models</p>
-    </div>
-  
-    <div class="search-form">
-      <div class="form-group">
-        <label for="make">Vehicle Make</label>
-        <select id="make" [(ngModel)]="selectedMakeId" (change)="onMakeChange()">
-          <option [ngValue]="null" disabled>Select a make...</option>
-          <option *ngFor="let make of makes" [ngValue]="make.make_ID">
-            {{ make.make_Name }}
-          </option>
-        </select>
-        <span *ngIf="isLoadingMakes" class="loading-text">Loading makes...</span>
-      </div>
-  
-      <div class="form-group">
-        <label for="year">Manufacturing Year</label>
-        <select id="year" [(ngModel)]="selectedYear">
-          <option [ngValue]="null" disabled>Select a year...</option>
-          <option *ngFor="let year of years" [ngValue]="year">
-            {{ year }}
-          </option>
-        </select>
-      </div>
-  
-      <button class="search-btn" (click)="onSearch()" [disabled]="!canSearch || isLoadingModels">
-        <span *ngIf="isLoadingModels">Searching...</span>
-        <span *ngIf="!isLoadingModels">Search</span>
-      </button>
-    </div>
-  
-    <div class="vehicle-types" *ngIf="vehicleTypes.length > 0">
-      <p class="types-label">Available vehicle types for this make:</p>
-      <div class="types-list">
-        <span class="type-badge" *ngFor="let type of vehicleTypes">
-          {{ type.vehicleTypeName }}
-        </span>
-      </div>
-    </div>
-  
-    <span *ngIf="isLoadingTypes" class="loading-text">Loading vehicle types...</span>
+  <div class="search-header">
+    <h1>Vehicle Browser</h1>
+    <p class="subtitle">Select a make and year to explore available models</p>
   </div>
+
+  <div class="search-form">
+
+    <div class="form-group">
+      <label for="make-search">Vehicle Make</label>
+      <div class="autocomplete-wrapper">
+        <input
+          id="make-search"
+          type="text"
+          [(ngModel)]="searchText"
+          (input)="onSearchInput()"
+          [placeholder]="isLoadingMakes ? 'Loading makes...' : 'Type to search a make...'"
+          [disabled]="isLoadingMakes"
+          autocomplete="off"
+        />
+        <ul class="autocomplete-list" *ngIf="showDropdown">
+          <li
+            *ngFor="let make of filteredMakes"
+            (click)="selectMake(make)">
+            {{ make.make_Name }}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="year">Manufacturing Year</label>
+      <select id="year" [(ngModel)]="selectedYear">
+        <option [ngValue]="null" disabled>Select a year...</option>
+        <option *ngFor="let year of years" [ngValue]="year">
+          {{ year }}
+        </option>
+      </select>
+    </div>
+
+    <button class="search-btn" (click)="onSearch()" [disabled]="!canSearch || isLoadingModels">
+      <span *ngIf="isLoadingModels">Searching...</span>
+      <span *ngIf="!isLoadingModels">Search</span>
+    </button>
+
+  </div>
+
+  <div class="vehicle-types" *ngIf="vehicleTypes.length > 0">
+    <p class="types-label">Available vehicle types for this make:</p>
+    <div class="types-list">
+      <span class="type-badge" *ngFor="let type of vehicleTypes">
+        {{ type.vehicleTypeName }}
+      </span>
+    </div>
+  </div>
+
+  <span *ngIf="isLoadingTypes" class="loading-text">Loading vehicle types...</span>
+</div>
