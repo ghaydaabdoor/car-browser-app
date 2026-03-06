@@ -3,7 +3,7 @@ using VehicleBrowser.API.Models;
 
 namespace VehicleBrowser.API.Services
 {
-    public class VehicleService(HttpClient httpClient, IConfiguration configuration, ILogger<VehicleService> logger) : IVehicleService
+    public class VehicleService(HttpClient httpClient, IConfiguration configuration) : IVehicleService
     {
         private readonly string _baseUrl = configuration["NhtsaApi:BaseUrl"]
             ?? throw new InvalidOperationException("NhtsaApi:BaseUrl is not configured.");
